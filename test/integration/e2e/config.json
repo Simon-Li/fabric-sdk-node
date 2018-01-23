@@ -32,6 +32,20 @@
 				"server-hostname": "peer0.org2.example.com",
 				"tls_cacerts": "../../fixtures/channel/crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tlscacerts/org2.example.com-cert.pem"
 			}
+		},
+		"org3": {
+			"name": "peerOrg3",
+			"mspid": "Org3MSP",
+			"ca": {
+				"url": "https://localhost:9054",
+				"name": "ca-org3"
+			},
+			"peer1": {
+				"requests": "grpcs://localhost:9051",
+				"events": "grpcs://localhost:9053",
+				"server-hostname": "peer0.org3.example.com",
+				"tls_cacerts": "../../fixtures/channel/crypto-config/peerOrganizations/org3.example.com/peers/peer0.org3.example.com/tlscacerts/org3.example.com-cert.pem"
+			}
 		}
 	}
 }

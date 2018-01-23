@@ -71,7 +71,7 @@ test('\n\n***** SDK Built config update  create flow  *****\n\n', function(t) {
 		}
 	);
 
-
+/*	original settings
 	var TWO_ORG_MEMBERS_AND_ADMIN = [{
 		role: {
 			name: 'member',
@@ -88,11 +88,41 @@ test('\n\n***** SDK Built config update  create flow  *****\n\n', function(t) {
 			mspId: 'OrdererMSP'
 		}
 	}];
-
 	var ONE_OF_TWO_ORG_MEMBER = {
 		identities: TWO_ORG_MEMBERS_AND_ADMIN,
 		policy: {
 			'1-of': [{ 'signed-by': 0 }, { 'signed-by': 1 }]
+		}
+	};
+*/
+
+	// udpated below for three org. members
+	var THREE_ORG_MEMBERS_AND_ADMIN = [{
+		role: {
+			name: 'member',
+			mspId: 'Org1MSP'
+		}
+	}, {
+		role: {
+			name: 'member',
+			mspId: 'Org2MSP'
+		}		
+	}, {
+		role: {
+			name: 'member',
+			mspId: 'Org3MSP'
+		}
+	}, {
+		role: {
+			name: 'admin',
+			mspId: 'OrdererMSP'
+		}
+	}];
+
+	var ONE_OF_THREE_ORG_MEMBER = {
+		identities: THREE_ORG_MEMBERS_AND_ADMIN,
+		policy: {
+			'1-of': [{ 'signed-by': 0 }, { 'signed-by': 1 }, { 'signed-by': 2 }]
 		}
 	};
 
@@ -154,14 +184,35 @@ test('\n\n***** SDK Built config update  create flow  *****\n\n', function(t) {
 
 		// sign the config
 		var signature = client.signChannelConfig(config);
+		// convert signature to a storable string
+		// fabric-client SDK will convert back during create
+		var string_signature = signature.toBuffer().toString('hex');
+		t.pass('Successfully signed config update');
+		// collect signature from org1 admin
+		// TODO: signature counting against policies on the orderer
+		// at the moment is being investigated, but it requires this
+		// weird double-signature from each org admin
+		signatures.push(string_signature);
+		signatures.push(string_signature);
+		signatures.push(string_signature); // -TBD, not sure whether or a third signature needs to be pushed
+
+		// make sure we do not reuse the user
+		client._userContext = null;
+		return testUtil.getSubmitter(client, t, true /*get the org admin*/, 'org3');
+	}).then((admin) => {
+		t.pass('Successfully enrolled user \'admin\' for org3');
+
+		// sign the config
+		var signature = client.signChannelConfig(config);
 		t.pass('Successfully signed config update');
 
-		// collect signature from org2 admin
+		// collect signature from org3 admin
 		// TODO: signature counting against policies on the orderer
 		// at the moment is being investigated, but it requires this
 		// weird double-signature from each org admin
 		signatures.push(signature);
 		signatures.push(signature);
+		signatures.push(signature); // -TBD, not sure whether or a third signature needs to be pushed
 
 		// make sure we do not reuse the user
 		client._userContext = null;
@@ -180,6 +231,7 @@ test('\n\n***** SDK Built config update  create flow  *****\n\n', function(t) {
 		// weird double-signature from each org admin
 		signatures.push(signature);
 		signatures.push(signature);
+		signatures.push(signature); // -TBD, not sure whether or a third signature needs to be pushed
 
 		logger.debug('\n***\n done signing \n***\n');
 

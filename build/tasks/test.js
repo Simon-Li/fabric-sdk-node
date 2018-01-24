@@ -45,7 +45,6 @@ if (!/-snapshot/.test(release)) {
 
 process.env.DOCKER_IMG_TAG = dockerImageTag;
 
-
 gulp.task('pre-test', function() {
 	return gulp.src([
 		'node_modules/fabric-client/lib/**/*.js',

@@ -36,7 +36,7 @@ module.exports.CHAINCODE_PATH = 'github.com/example_cc';
 module.exports.CHAINCODE_UPGRADE_PATH = 'github.com/example_cc1';
 module.exports.CHAINCODE_UPGRADE_PATH_V2 = 'github.com/example_cc2';
 module.exports.END2END = {
-	channel: 'mychannel',
+	channel: 'test-network',
 	chaincodeId: 'end2endnodesdk',
 	chaincodeVersion: 'v0'
 };

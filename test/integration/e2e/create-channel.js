@@ -39,7 +39,7 @@ var the_user = null;
 var ORGS;
 
 //var channel_name = 'mychannel';
-var channel_name = 'test_network';
+var channel_name = 'test-network';
 
 // can use "channel=<name>" to control the channel name from command line
 if (process.argv.length > 2) {

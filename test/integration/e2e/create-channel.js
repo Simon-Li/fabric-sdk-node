@@ -38,7 +38,9 @@ var the_user = null;
 
 var ORGS;
 
-var channel_name = 'mychannel';
+//var channel_name = 'mychannel';
+var channel_name = 'test_network';
+
 // can use "channel=<name>" to control the channel name from command line
 if (process.argv.length > 2) {
 	if (process.argv[2].indexOf('channel=') === 0) {
@@ -154,12 +156,12 @@ test('\n\n***** SDK Built config update  create flow  *****\n\n', function(t) {
 		t.pass('Successfully enrolled user \'admin\' for orderer');
 
 		// use the config update created by the configtx tool
-		let envelope_bytes = fs.readFileSync(path.join(__dirname, '../../fixtures/channel/mychannel.tx'));
+		let envelope_bytes = fs.readFileSync(path.join(__dirname, '../../fixtures/channel/channel.tx'));
 		config = client.extractChannelConfig(envelope_bytes);
 		t.pass('Successfull extracted the config update from the configtx envelope');
 
 		client._userContext = null;
-		return testUtil.getSubmitter(client, t, true /*get the org admin*/, 'org1');
+		return testUtil.getSubmitter(client, t, true /*get the org admin*/, 'org1');		
 	}).then((admin) => {
 		t.pass('Successfully enrolled user \'admin\' for org1');
 
@@ -174,7 +176,7 @@ test('\n\n***** SDK Built config update  create flow  *****\n\n', function(t) {
 		// at the moment is being investigated, but it requires this
 		// weird double-signature from each org admin
 		signatures.push(string_signature);
-		signatures.push(string_signature);
+		//signatures.push(string_signature);
 
 		// make sure we do not reuse the user
 		client._userContext = null;
@@ -193,8 +195,7 @@ test('\n\n***** SDK Built config update  create flow  *****\n\n', function(t) {
 		// at the moment is being investigated, but it requires this
 		// weird double-signature from each org admin
 		signatures.push(string_signature);
-		signatures.push(string_signature);
-		signatures.push(string_signature); // -TBD, not sure whether or a third signature needs to be pushed
+		//signatures.push(string_signature);
 
 		// make sure we do not reuse the user
 		client._userContext = null;
@@ -211,8 +212,7 @@ test('\n\n***** SDK Built config update  create flow  *****\n\n', function(t) {
 		// at the moment is being investigated, but it requires this
 		// weird double-signature from each org admin
 		signatures.push(signature);
-		signatures.push(signature);
-		signatures.push(signature); // -TBD, not sure whether or a third signature needs to be pushed
+		//signatures.push(signature);
 
 		// make sure we do not reuse the user
 		client._userContext = null;
@@ -230,8 +230,7 @@ test('\n\n***** SDK Built config update  create flow  *****\n\n', function(t) {
 		// at the moment is being investigated, but it requires this
 		// weird double-signature from each org admin
 		signatures.push(signature);
-		signatures.push(signature);
-		signatures.push(signature); // -TBD, not sure whether or a third signature needs to be pushed
+		//signatures.push(signature);
 
 		logger.debug('\n***\n done signing \n***\n');
 
@@ -244,6 +243,7 @@ test('\n\n***** SDK Built config update  create flow  *****\n\n', function(t) {
 			orderer : orderer,
 			txId  : tx_id
 		};
+		logger.debug('request content:: %j', request);
 
 		// send create request to orderer
 		return client.createChannel(request);

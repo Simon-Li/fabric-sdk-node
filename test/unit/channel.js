@@ -44,7 +44,7 @@ var idModule = require('fabric-client/lib/msp/identity.js');
 var SigningIdentity = idModule.SigningIdentity;
 
 var _channel = null;
-var channelName = 'testChannel';
+var channelName = 'test-network';
 var client = new Client();
 
 var utils = require('fabric-client/lib/utils.js');

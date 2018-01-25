@@ -39,7 +39,7 @@ test('\n\n***** READ in the genesis block *****\n\n', function(t) {
 	testUtil.resetDefaults();
 
 	// readin the envelope to send to the orderer
-	let normalPath = path.normalize(path.join(__dirname, '../fixtures/channel/twoorgs.genesis.block'));
+	let normalPath = path.normalize(path.join(__dirname, '../fixtures/channel/genesis.block'));
 	var data = fs.readFileSync(normalPath);
 
 	var channel = new Channel('test', 'fake');
@@ -61,7 +61,7 @@ test('\n\n***** READ in the genesis block *****\n\n', function(t) {
 
 test('\n\n***** READ in the configtx *****\n\n', function(t) {
 	// readin the envelope to send to the orderer
-	let normalPath = path.normalize(path.join(__dirname, '../fixtures/channel/mychannel.tx'));
+	let normalPath = path.normalize(path.join(__dirname, '../fixtures/channel/channel.tx'));
 	var data = fs.readFileSync(normalPath);
 
 	var channel = new Channel('test', 'fake');

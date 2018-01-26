@@ -1,7 +1,7 @@
 {
 	"test-network": {
 		"orderer": {
-			"url": "grpc://localhost:7050",
+			"url": "grpcs://localhost:7050",
 			"server-hostname": "orderer.example.com",
 			"tls_cacerts": "../../fixtures/channel/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem"
 		},
@@ -9,12 +9,12 @@
 			"name": "peerOrg1",
 			"mspid": "Org1MSP",
 			"ca": {
-				"url": "http://localhost:7054",
+				"url": "https://localhost:7054",
 				"name": "ca-org1"
 			},
 			"peer1": {
-				"requests": "grpc://localhost:7051",
-				"events": "grpc://localhost:7053",
+				"requests": "grpcs://localhost:7051",
+				"events": "grpcs://localhost:7053",
 				"server-hostname": "peer0.org1.example.com",
 				"tls_cacerts": "../../fixtures/channel/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp/tlscacerts/tlsca.org1.example.com-cert.pem"
 			}
@@ -23,12 +23,12 @@
 			"name": "peerOrg2",
 			"mspid": "Org2MSP",
 			"ca": {
-				"url": "http://localhost:8054",
+				"url": "https://localhost:8054",
 				"name": "ca-org2"
 			},
 			"peer1": {
-				"requests": "grpc://localhost:8051",
-				"events": "grpc://localhost:8053",
+				"requests": "grpcs://localhost:8051",
+				"events": "grpcs://localhost:8053",
 				"server-hostname": "peer0.org2.example.com",
 				"tls_cacerts": "../../fixtures/channel/crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/msp/tlscacerts/tlsca.org2.example.com-cert.pem"
 			}
@@ -37,12 +37,12 @@
 			"name": "peerOrg3",
 			"mspid": "Org3MSP",
 			"ca": {
-				"url": "http://localhost:9054",
+				"url": "https://localhost:9054",
 				"name": "ca-org3"
 			},
 			"peer1": {
-				"requests": "grpc://localhost:9051",
-				"events": "grpc://localhost:9053",
+				"requests": "grpcs://localhost:9051",
+				"events": "grpcs://localhost:9053",
 				"server-hostname": "peer0.org3.example.com",
 				"tls_cacerts": "../../fixtures/channel/crypto-config/peerOrganizations/org3.example.com/peers/peer0.org3.example.com/msp/tlscacerts/tlsca.org3.example.com-cert.pem"
 			}

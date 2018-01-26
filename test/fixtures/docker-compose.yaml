@@ -13,7 +13,7 @@ services:
       - FABRIC_CA_SERVER_CA_NAME=ca-org1
       - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org1.example.com-cert.pem
       - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/07748ee11a6d1a18650284075bb2f05c83dbac2338e9dff96c5bb3d8c06f27c3_sk
-      - FABRIC_CA_SERVER_TLS_ENABLED=false
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
       - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org1.example.com-cert.pem
       - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/07748ee11a6d1a18650284075bb2f05c83dbac2338e9dff96c5bb3d8c06f27c3_sk
       - GODEBUG=netdns=go
@@ -31,7 +31,7 @@ services:
       - FABRIC_CA_SERVER_CA_NAME=ca-org2
       - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org2.example.com-cert.pem
       - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/be478dd668e53fb75e7453bb996f2e03ce4e05e99038e5ccad6a1bc8b8cbb7cf_sk
-      - FABRIC_CA_SERVER_TLS_ENABLED=false
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
       - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org2.example.com-cert.pem
       - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/be478dd668e53fb75e7453bb996f2e03ce4e05e99038e5ccad6a1bc8b8cbb7cf_sk
       - GODEBUG=netdns=go
@@ -49,7 +49,7 @@ services:
       - FABRIC_CA_SERVER_CA_NAME=ca-org3
       - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org3.example.com-cert.pem
       - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/02283862ddcf3952c1907c0e876b19e36a4ccb0dd9eeeb7c957a30b75bcb52a3_sk
-      - FABRIC_CA_SERVER_TLS_ENABLED=false
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
       - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org3.example.com-cert.pem
       - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/02283862ddcf3952c1907c0e876b19e36a4ccb0dd9eeeb7c957a30b75bcb52a3_sk
       - GODEBUG=netdns=go
@@ -69,11 +69,11 @@ services:
       - ORDERER_GENERAL_GENESISMETHOD=file
       - ORDERER_GENERAL_GENESISFILE=/etc/hyperledger/configtx/genesis.block
       - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
-      - ORDERER_GENERAL_LOCALMSPDIR=/etc/hyperledger/msp/orderer
-      - ORDERER_GENERAL_TLS_ENABLED=false
-      - ORDERER_GENERAL_TLS_PRIVATEKEY=/etc/hyperledger/msp/orderer/keystore/2ee40425a26a35472d01872519c92ffdc03be95f1a81f8a6b5915fc4099dcdce_sk
-      - ORDERER_GENERAL_TLS_CERTIFICATE=/etc/hyperledger/msp/orderer/signcerts/orderer.example.com-cert.pem
-      - ORDERER_GENERAL_TLS_ROOTCAS=[/etc/hyperledger/msp/orderer/cacerts/ca.example.com-cert.pem, /etc/hyperledger/msp/peerOrg1/cacerts/ca.org1.example.com-cert.pem, /etc/hyperledger/msp/peerOrg2/cacerts/ca.org2.example.com-cert.pem, /etc/hyperledger/msp/peerOrg3/cacerts/ca.org3.example.com-cert.pem]
+      - ORDERER_GENERAL_LOCALMSPDIR=/etc/hyperledger/msp/orderer/msp
+      - ORDERER_GENERAL_TLS_ENABLED=true
+      - ORDERER_GENERAL_TLS_PRIVATEKEY=/etc/hyperledger/msp/orderer/tls/server.key
+      - ORDERER_GENERAL_TLS_CERTIFICATE=/etc/hyperledger/msp/orderer/tls/server.crt
+      - ORDERER_GENERAL_TLS_ROOTCAS=[/etc/hyperledger/msp/orderer/tls/ca.crt, /etc/hyperledger/msp/peerOrg1/tlscacerts/tlsca.org1.example.com-cert.pem, /etc/hyperledger/msp/peerOrg2/tlscacerts/tlsca.org2.example.com-cert.pem, /etc/hyperledger/msp/peerOrg3/tlscacerts/tlsca.org3.example.com-cert.pem]
       - GODEBUG=netdns=go
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/orderer
     command: orderer
@@ -81,7 +81,7 @@ services:
       - 7050:7050
     volumes:
         - ./channel:/etc/hyperledger/configtx
-        - ./channel/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/msp/:/etc/hyperledger/msp/orderer
+        - ./channel/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/:/etc/hyperledger/msp/orderer
         - ./channel/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp/:/etc/hyperledger/msp/peerOrg1
         - ./channel/crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/msp/:/etc/hyperledger/msp/peerOrg2
         - ./channel/crypto-config/peerOrganizations/org3.example.com/peers/peer0.org3.example.com/msp/:/etc/hyperledger/msp/peerOrg3
@@ -96,12 +96,12 @@ services:
       ## the following setting redirects chaincode container logs to the peer container logs
       - CORE_VM_DOCKER_ATTACHSTDOUT=true
       - CORE_PEER_LOCALMSPID=Org1MSP
-      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/peer/
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/peer/msp
       - CORE_PEER_ADDRESS=peer0.org1.example.com:7051
-      - CORE_PEER_TLS_ENABLED=false
-      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/msp/peer/keystore/a0b1b5cb003be2f5b1f0979c9279685778f324051e12eb9f9f07d407582d96e6_sk
-      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/msp/peer/signcerts/peer0.org1.example.com-cert.pem
-      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/msp/peer/cacerts/ca.org1.example.com-cert.pem
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/msp/peer/tls/server.key
+      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/msp/peer/tls/server.crt
+      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/msp/peer/tls/ca.crt
       # # the following setting starts chaincode containers on the same
       # # bridge network as the peers
       # # https://docs.docker.com/compose/networking/
@@ -114,7 +114,7 @@ services:
       - 7053:7053
     volumes:
         - /var/run/:/host/var/run/
-        - ./channel/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp/:/etc/hyperledger/msp/peer
+        - ./channel/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/:/etc/hyperledger/msp/peer
     depends_on:
       - orderer.example.com
 
@@ -125,12 +125,12 @@ services:
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
       - CORE_PEER_ID=peer0.org2.example.com
       - CORE_PEER_LOCALMSPID=Org2MSP
-      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/peer/
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/peer/msp
       - CORE_PEER_ADDRESS=peer0.org2.example.com:7051
-      - CORE_PEER_TLS_ENABLED=false
-      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/msp/peer/keystore/d8aff04ef3cf98447d0e7d1ee20b7176270a7912c7a43f3c33490b6b99b081f5_sk
-      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/msp/peer/signcerts/peer0.org2.example.com-cert.pem
-      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/msp/peer/cacerts/ca.org2.example.com-cert.pem
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/msp/peer/tls/server.key
+      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/msp/peer/tls/server.crt
+      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/msp/peer/tls/ca.crt
       # # the following setting starts chaincode containers on the same
       # # bridge network as the peers
       # # https://docs.docker.com/compose/networking/
@@ -143,7 +143,7 @@ services:
       - 8053:7053
     volumes:
         - /var/run/:/host/var/run/
-        - ./channel/crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/msp/:/etc/hyperledger/msp/peer
+        - ./channel/crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/:/etc/hyperledger/msp/peer
     depends_on:
       - orderer.example.com
 
@@ -154,12 +154,12 @@ services:
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
       - CORE_PEER_ID=peer0.org3.example.com
       - CORE_PEER_LOCALMSPID=Org3MSP
-      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/peer/
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/peer/msp
       - CORE_PEER_ADDRESS=peer0.org3.example.com:7051
-      - CORE_PEER_TLS_ENABLED=false
-      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/msp/peer/keystore/97fcfbb97bfc157361d1a0fbb06dd81a93f2053af21902e6780119a9b233d3e6_sk
-      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/msp/peer/signcerts/peer0.org3.example.com-cert.pem
-      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/msp/peer/cacerts/ca.org3.example.com-cert.pem
+      - CORE_PEER_TLS_ENABLED=true
+      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/msp/peer/tls/server.key
+      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/msp/peer/tls/server.crt
+      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/msp/peer/tls/ca.crt
       # # the following setting starts chaincode containers on the same
       # # bridge network as the peers
       # # https://docs.docker.com/compose/networking/
@@ -172,7 +172,7 @@ services:
       - 9053:7053
     volumes:
         - /var/run/:/host/var/run/
-        - ./channel/crypto-config/peerOrganizations/org3.example.com/peers/peer0.org3.example.com/msp/:/etc/hyperledger/msp/peer
+        - ./channel/crypto-config/peerOrganizations/org3.example.com/peers/peer0.org3.example.com/:/etc/hyperledger/msp/peer
     depends_on:
       - orderer.example.com
 

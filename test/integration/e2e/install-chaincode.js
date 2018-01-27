@@ -38,13 +38,20 @@ test('\n\n***** End-to-end flow: chaincode install *****\n\n', (t) => {
 	}, (err) => {
 		t.fail('Failed to install chaincode in peers of organization "org1". ' + err.stack ? err.stack : err);
 		logger.error('Failed to install chaincode in peers of organization "org1". ');
-		return e2eUtils.installChaincode('org2', testUtil.CHAINCODE_PATH, 'v0', t, true);
+		t.end();
 	}).then(() => {
 		t.pass('Successfully installed chaincode in peers of organization "org2"');
-		t.end();
+		return e2eUtils.installChaincode('org3', testUtil.CHAINCODE_PATH, 'v0', t, true);
 	}, (err) => {
 		t.fail('Failed to install chaincode in peers of organization "org2". ' + err.stack ? err.stack : err);
 		logger.error('Failed to install chaincode in peers of organization "org2". ');
+		t.end();
+	}).then(() => {
+		t.pass('Successfully installed chaincode in peers of organization "org3"');
+		t.end();
+	}, (err) => {
+		t.fail('Failed to install chaincode in peers of organization "org3". ' + err.stack ? err.stack : err);
+		logger.error('Failed to install chaincode in peers of organization "org3". ');
 		t.end();
 	}).catch((err) => {
 		t.fail('Test failed due to unexpected reasons. ' + err.stack ? err.stack : err);

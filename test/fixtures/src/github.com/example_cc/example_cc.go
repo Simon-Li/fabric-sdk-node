@@ -32,7 +32,7 @@ type SimpleChaincode struct {
 }
 
 func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response  {
-	logger.Info("########### example_cc0 Init ###########")
+	logger.Info("########### Aipu: example_cc0 Init ###########")
 
 	_, args := stub.GetFunctionAndParameters()
 	var A, B string    // Entities
@@ -50,7 +50,7 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response  {
 	if err != nil {
 		return shim.Error("Expecting integer value for asset holding")
 	}
-	logger.Info("Aval = %d, Bval = %d\n", Aval, Bval)
+	logger.Info("Aipu: Aval = %d, Bval = %d\n", Aval, Bval)
 
 	// Write the state to the ledger
 	err = stub.PutState(A, []byte(strconv.Itoa(Aval)))

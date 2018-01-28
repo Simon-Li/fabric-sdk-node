@@ -18,6 +18,8 @@
 // in a happy-path scenario
 'use strict';
 
+process.env.HFC_LOGGING = '{"debug": "console"}';
+
 var tape = require('tape');
 var _test = require('tape-promise');
 var test = _test(tape);

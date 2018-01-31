@@ -32,6 +32,13 @@ var Constants = require('./constants.js');
 
 var logger = require('fabric-client/lib/utils.js').getLogger('TestUtil');
 
+module.exports.CHAINCODE_DEMO_PATH = 'github.com/demo_cc';
+module.exports.END2END_DEMO = {
+	channel: 'test-network',
+	chaincodeId: 'end2end_demo_nodesdk',
+	chaincodeVersion: 'v0'
+};
+
 module.exports.CHAINCODE_PATH = 'github.com/example_cc';
 module.exports.CHAINCODE_UPGRADE_PATH = 'github.com/example_cc1';
 module.exports.CHAINCODE_UPGRADE_PATH_V2 = 'github.com/example_cc2';

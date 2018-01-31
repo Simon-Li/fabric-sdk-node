@@ -32,6 +32,8 @@ var Client = require('fabric-client');
 var testUtil = require('../../unit/util.js');
 
 var e2e = testUtil.END2END;
+var e2e_demo = testUtil.END2END_DEMO;
+
 var ORGS;
 
 var grpc = require('grpc');
@@ -49,10 +51,12 @@ function init() {
 function installChaincode(org, chaincode_path, version, t, get_admin) {
 	init();
 	Client.setConfigSetting('request-timeout', 60000);
-	var channel_name = Client.getConfigSetting('E2E_CONFIGTX_CHANNEL_NAME', testUtil.END2END.channel);
+	//var channel_name = Client.getConfigSetting('E2E_CONFIGTX_CHANNEL_NAME', testUtil.END2END.channel);
+	var channel_name = Client.getConfigSetting('E2E_CONFIGTX_CHANNEL_NAME', testUtil.END2END_DEMO.channel);
 
 	var client = new Client();
-	// client.setDevMode(true);
+	//client.setDevMode(true); // enable for testing just for now
+
 	var channel = client.newChannel(channel_name);
 
 	var orgName = ORGS[org].name;
@@ -111,7 +115,8 @@ function installChaincode(org, chaincode_path, version, t, get_admin) {
 		var request = {
 			targets: targets,
 			chaincodePath: chaincode_path,
-			chaincodeId: e2e.chaincodeId,
+			//chaincodeId: e2e.chaincodeId,
+			chaincodeId: e2e_demo.chaincodeId,
 			chaincodeVersion: version
 		};
 
@@ -155,7 +160,8 @@ module.exports.installChaincode = installChaincode;
 function instantiateChaincode(userOrg, chaincode_path, version, upgrade, t){
 	init();
 
-	var channel_name = Client.getConfigSetting('E2E_CONFIGTX_CHANNEL_NAME', testUtil.END2END.channel);
+	//var channel_name = Client.getConfigSetting('E2E_CONFIGTX_CHANNEL_NAME', testUtil.END2END.channel);
+	var channel_name = Client.getConfigSetting('E2E_CONFIGTX_CHANNEL_NAME', testUtil.END2END_DEMO.channel);
 
 	var targets = [],
 		eventhubs = [];
@@ -419,10 +425,11 @@ function buildChaincodeProposal(client, the_user, chaincode_path, version, upgra
 	// send proposal to endorser
 	var request = {
 		chaincodePath: chaincode_path,
-		chaincodeId: e2e.chaincodeId,
+		//chaincodeId: e2e.chaincodeId,
+		chaincodeId: e2e_demo.chaincodeId,
 		chaincodeVersion: version,
-		fcn: 'init',
-		args: ['a', '100', 'b', '200'],
+		fcn: 'Init',
+		args: ['{"ObjectType": "loanForm", "Name": "AIPU", "OwnerName": "simon"}'],
 		txId: tx_id,
 		// use this to demonstrate the following policy:
 		// 'if signed by org1 admin, then that's the only signature required,
@@ -571,7 +578,8 @@ function invokeChaincode(userOrg, version, t, useStore){
 
 		// send proposal to endorser
 		var request = {
-			chaincodeId : e2e.chaincodeId,
+			//chaincodeId : e2e.chaincodeId,
+			chaincodeId : e2e_demo.chaincodeId,
 			fcn: 'move',
 			args: ['a', 'b','100'],
 			txId: tx_id,
@@ -764,7 +772,8 @@ function queryChaincode(org, version, value, t, transientMap) {
 
 		// send query
 		var request = {
-			chaincodeId : e2e.chaincodeId,
+			//chaincodeId : e2e.chaincodeId,
+			chaincodeId : e2e_demo.chaincodeId,
 			txId: tx_id,
 			fcn: 'query',
 			args: ['b']

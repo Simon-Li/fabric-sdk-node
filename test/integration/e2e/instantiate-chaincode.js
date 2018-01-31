@@ -18,6 +18,8 @@
 // in a happy-path scenario
 'use strict';
 
+//process.env.HFC_LOGGING = '{"debug": "console"}';
+
 var utils = require('fabric-client/lib/utils.js');
 var logger = utils.getLogger('E2E instantiate-chaincode');
 
@@ -29,7 +31,7 @@ var e2eUtils = require('./e2eUtils.js');
 var testUtil = require('../../unit/util.js');
 
 test('\n\n***** End-to-end flow: instantiate chaincode *****\n\n', (t) => {
-	e2eUtils.instantiateChaincode('org1', testUtil.CHAINCODE_PATH, 'v0', false, t)
+	e2eUtils.instantiateChaincode('org1', testUtil.CHAINCODE_DEMO_PATH, 'v0', false, t)
 	.then((result) => {
 		if(result){
 			t.pass('Successfully instantiated chaincode on the channel');

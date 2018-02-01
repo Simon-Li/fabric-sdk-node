@@ -732,7 +732,7 @@ function queryChaincode(org, version, value, t, transientMap) {
 	init();
 
 	Client.setConfigSetting('request-timeout', 60000);
-	var channel_name = Client.getConfigSetting('E2E_CONFIGTX_CHANNEL_NAME', testUtil.END2END.channel);
+	var channel_name = Client.getConfigSetting('E2E_CONFIGTX_CHANNEL_NAME', testUtil.END2END_DEMO.channel);
 
 	// this is a transaction, will just use org's identity to
 	// submit the request. intentionally we are using a different org
@@ -777,8 +777,8 @@ function queryChaincode(org, version, value, t, transientMap) {
 			//chaincodeId : e2e.chaincodeId,
 			chaincodeId : e2e_demo.chaincodeId,
 			txId: tx_id,
-			fcn: 'query',
-			args: ['b']
+			fcn: 'queryLoanForms',
+			args: ['{"selector": { "objectType": "loanForm" }}']
 		};
 
 		if (transientMap) {

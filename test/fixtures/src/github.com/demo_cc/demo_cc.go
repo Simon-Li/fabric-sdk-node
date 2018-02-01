@@ -33,7 +33,7 @@ type DemoChaincode struct {
 }
 
 type LoanForm struct {
-	ObjectType   string `json:"docType"` //docType is used to distinguish the various types of objects in state database
+	ObjectType   string `json:"objectType"` //docType is used to distinguish the various types of objects in state database
 	Name         string `json:"name"`    //the fieldtags are needed to keep case from bouncing around
 	OwnerName    string `json:"ownerName"`
 	OwnerId      string `json:"ownerId"`
@@ -59,7 +59,7 @@ func (t *DemoChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 		return shim.Error("Incorrect number of arguments, Expecting 1")
 	}
 
-	fmt.Println("- start init loan form")
+	fmt.Println("- start create loan form")
 	if len(args[0]) <= 0 {
 		return shim.Error("1st argument must be a non-empty string")
 	}
@@ -71,7 +71,7 @@ func (t *DemoChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 	if err != nil {
 		fmt.Println("error:", err)
 	}
-	fmt.Printf("form %+v", loanForm)
+	fmt.Printf("loan form %+v", loanForm)
 
 	loanFormJSONasBytes, err := json.Marshal(&loanForm)
 	if err != nil {
@@ -83,7 +83,7 @@ func (t *DemoChaincode) Init(stub shim.ChaincodeStubInterface) pb.Response {
 		return shim.Error(err.Error())
 	}
 
-	fmt.Println("- end init loan form")
+	fmt.Println("- end create loan form")
 
 	return shim.Success(nil)
 }
@@ -94,8 +94,8 @@ func (t *DemoChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 	fmt.Println("invoke is running " + function)
 
 	// Handle different functions
-	if function == "initLoanForm" { //create a new loan form
-		return t.initLoanForm(stub, args)
+	if function == "createLoanForm" { //create a new loan form
+		return t.createLoanForm(stub, args)
 	} else if function == "readLoanForm" { //read a loan form
 		return t.readLoanForm(stub, args)
 	} else if function == "queryLoanForms" { //find loan forms based on an ad hoc rich query
@@ -107,16 +107,15 @@ func (t *DemoChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 }
 
 // ==================================================================
-// initLoanForm - create a new loan form, store into chaincode state
+// createLoanForm - create a new loan form, store into chaincode state
 // ==================================================================
-func (t *DemoChaincode) initLoanForm(stub shim.ChaincodeStubInterface, args []string) pb.Response {
-	//var err error
+func (t *DemoChaincode) createLoanForm(stub shim.ChaincodeStubInterface, args []string) pb.Response {
 
 	if len(args) != 1 {
 		return shim.Error("Incorrect number of arguments, Expecting 1")
 	}
 
-	fmt.Println("- start init loan form")
+	fmt.Println("- start create loan form")
 	if len(args[0]) <= 0 {
 		return shim.Error("1st argument must be a non-empty string")
 	}
@@ -128,9 +127,19 @@ func (t *DemoChaincode) initLoanForm(stub shim.ChaincodeStubInterface, args []st
 	if err != nil {
 		fmt.Println("error:", err)
 	}
-	fmt.Printf("form %+v", loanForm)
+	fmt.Printf("loan form %+v", loanForm)
 
-	fmt.Println("- end init loan form")
+	loanFormJSONasBytes, err := json.Marshal(&loanForm)
+	if err != nil {
+		return shim.Error(err.Error())
+	}
+
+	err = stub.PutState(loanForm.Name, loanFormJSONasBytes)
+	if err != nil {
+		return shim.Error(err.Error())
+	}
+	fmt.Println("- end create loan form")
+
 	return shim.Success(nil)
 }
 

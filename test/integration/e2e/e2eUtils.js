@@ -469,7 +469,8 @@ function invokeChaincode(userOrg, version, t, useStore){
 
 	logger.debug('invokeChaincode begin');
 	Client.setConfigSetting('request-timeout', 60000);
-	var channel_name = Client.getConfigSetting('E2E_CONFIGTX_CHANNEL_NAME', testUtil.END2END.channel);
+	//var channel_name = Client.getConfigSetting('E2E_CONFIGTX_CHANNEL_NAME', testUtil.END2END.channel);
+	var channel_name = Client.getConfigSetting('E2E_CONFIGTX_CHANNEL_NAME', testUtil.END2END_DEMO.channel);
 
 	var targets = [],
 		eventhubs = [];
@@ -580,8 +581,9 @@ function invokeChaincode(userOrg, version, t, useStore){
 		var request = {
 			//chaincodeId : e2e.chaincodeId,
 			chaincodeId : e2e_demo.chaincodeId,
-			fcn: 'move',
-			args: ['a', 'b','100'],
+			//fcn: 'move',
+			fcn: 'createLoanForm',
+			args: ['{"ObjectType": "loanForm", "Name": "HuiHanAgent4", "OwnerName": "HhUser002"}'],
 			txId: tx_id,
 		};
 		return channel.sendTransactionProposal(request);
